@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Page from './Page';
 import Carousel from './Carousel';
+import CreateEntryForm from '../Modals/CreateEntryForm';
 
 import { getAlbumEntriesByPage } from '../../services/albumEntriesService';
 
@@ -20,7 +21,8 @@ class PhotoAlbum extends Component {
     pageIndex: 0,
     pageSize: 8,
     albumEntries: [],
-    totalCount: 0
+    totalCount: 0,
+    isCreateFormOpen: false
   }
 
   componentDidMount() {
@@ -28,7 +30,7 @@ class PhotoAlbum extends Component {
       .then(response => {
         this.setState({ 
           albumEntries: response.response.grid,
-          totalCount: response.totalCount
+          totalCount: response.response.totalCount
         })
       })
       .catch(error => console.log(error));
@@ -75,12 +77,15 @@ class PhotoAlbum extends Component {
 
   isImage = (mediaUrl) => {
     const fileExt = mediaUrl.split(".").pop().toLowerCase();
-    console.log(fileExt);
     if (["mp4", "mov"].includes(fileExt)) {
       return false;
     }
     return true;
   };
+
+  toggleCreateEntryModal = (isOpen) => {
+    this.setState({ isCreateFormOpen: isOpen || !this.state.isCreateFormOpen });
+  }
 
   render() {
     const {
@@ -89,7 +94,8 @@ class PhotoAlbum extends Component {
       isCarouselOpen,
       selectedEntry,
       albumEntries,
-      totalCount
+      totalCount,
+      isCreateFormOpen
     } = this.state;
 
     if (isCarouselOpen) {
@@ -104,8 +110,12 @@ class PhotoAlbum extends Component {
     }
     return (
       <div className="PhotoAlbumContainer">
+        {isCreateFormOpen && <CreateEntryForm setIsOpen={this.toggleCreateEntryModal}/>}
+        <div className="create-album-entry">
+          <div title="Add photo" onClick={() => this.setState({ isCreateFormOpen: true })}>+</div>
+        </div>
         <div className="PhotoAlbum">
-          {albumEntries?.length && [...Array(totalCount)].map((e, index) => 
+          {albumEntries?.length && [...Array(Math.ceil(totalCount/4))].map((e, index) => 
             <Page
               key={index}
               pageNumber={index+1}

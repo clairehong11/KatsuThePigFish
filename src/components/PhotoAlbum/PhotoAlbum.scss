@@ -5,6 +5,19 @@
   transform: translate(-50%, -50%);
   width: 85%;
   height: 85%;
+  .create-album-entry {
+    position: absolute;
+    z-index: 1;
+    div {
+      background-color: brown;
+      padding: 0 8px 4px;
+      color: white;
+      width: fit-content;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
   .PhotoAlbum {
     display: flex;
     background-color: white;

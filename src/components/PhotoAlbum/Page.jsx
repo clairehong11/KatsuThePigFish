@@ -3,9 +3,11 @@ import './Page.scss';
 
 const AlbumEntry = ({ entry, index, toggleCarousel, isImage }) => <div
   className="album-entry" 
-  onClick={(e) => toggleCarousel({ data: entry, index })}
 >
-  <div className="container">
+  <div 
+    className="container"
+    onClick={(e) => toggleCarousel({ data: entry, index })}
+  >
     {isImage(entry.mediaUrl) ? <img src={entry.mediaUrl} alt="Katsu"/> : <video controls>
       <source src={entry.mediaUrl} type="video/mp4"></source>
     </video>}
@@ -26,11 +28,23 @@ const Page = ({ pageNumber, isVisible, albumEntries, toggleCarousel, isImage }) 
       {albumEntries.map((entry, index) => {
         if (!isEven) {
           return (
-            index < 4 && <AlbumEntry key={entry._id} entry={entry} index={index} toggleCarousel={toggleCarousel} isImage={isImage}/>
+            index < 4 && <AlbumEntry
+              key={entry._id} 
+              entry={entry} 
+              index={index} 
+              toggleCarousel={toggleCarousel} 
+              isImage={isImage}
+            />
           );
         } else {
           return (
-            index >=4 && <AlbumEntry key={entry._id} entry={entry} index={index} toggleCarousel={toggleCarousel} isImage={isImage}/>
+            index >=4 && <AlbumEntry
+              key={entry._id} 
+              entry={entry} 
+              index={index} 
+              toggleCarousel={toggleCarousel}
+              isImage={isImage}
+            />
           );
         }
       })}
